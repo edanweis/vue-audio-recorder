@@ -387,7 +387,9 @@
 
         if (msg.status === 'success') {
           this.successfulUpload && this.successfulUpload(msg.response)
-          this.removeRecord(this.recordList.findIndex(e=>e.index==msg.id))
+          setTimeout(e=>{
+            this.removeRecord(this.recordList.findIndex(e=>e.index==msg.id))
+          }, 1000);
         } else {
           this.failedUpload && this.failedUpload(msg.response)
         }
