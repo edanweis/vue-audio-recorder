@@ -397,6 +397,11 @@
       this.stopRecorder()
     },
     watch: {
+
+      selected(val){
+        this.$eventBus.$emit('selected', val)
+      },
+
       uploadStatus(val){
         console.log('you externally stopped')
         if(val && val.status=='success'){
