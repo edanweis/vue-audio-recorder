@@ -18,5 +18,5 @@ export function calculateLineHeadPosition (ev, element) {
 }
 
 export function convertTimeMMSS (seconds) {
-  return new Date(seconds * 1000).toISOString().substr(14, 5)
+  return new Date(Math.max(1,seconds) * 1000).toISOString().substr(14, 5)
 }

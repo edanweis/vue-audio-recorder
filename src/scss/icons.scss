@@ -1,7 +1,7 @@
 .ar-icon {
   fill: #747474;
   border-radius: 50%;
-  border: 1px solid #05CBCD;
+  // border: 1px solid #05CBCD;
   background-color: #FFFFFF;
   padding: 5px;
   cursor: pointer;
@@ -9,6 +9,7 @@
 
   &:hover {
     fill: #505050;
+    transform: scale(1.1)
   }
 
   &--no-border {
@@ -57,6 +58,7 @@
     width: 45px;
     height: 45px;
     line-height: 45px;
-    box-shadow: 0 2px 5px 1px rgba(158,158,158,0.5);
+    border: 1px solid rgba(0,0,0,0.15)
+    // box-shadow: 0 2px 5px 1px rgba(158,158,158,0.5);
   }
 }

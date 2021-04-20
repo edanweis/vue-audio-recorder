@@ -7,7 +7,7 @@
 
 <template>
   <div class="row">
-    <div class="toggle" @click="toggle">TOGGLE</div>
+    <div class="toggle" @click="setStatus">status</div>
 
     <audio-recorder v-if="showRecorder"
       upload-url="some url"
@@ -23,7 +23,10 @@
       :before-upload="callback"
       :successful-upload="callback"
       :failed-upload="callback"
-      :bit-rate="192"/>
+      :bit-rate="192"
+      :sample-rate="48000"
+      :uploadStatus="uploadStatus"
+      />
 
     <audio-player :src="mp3" v-if="!showRecorder"/>
   </div>
@@ -34,6 +37,7 @@
     name: 'app',
     data () {
       return {
+        uploadStatus: null,
         mp3: '/demo/example.mp3',
         showRecorder: true,
         headers: {
@@ -45,8 +49,12 @@
       callback (msg) {
         console.debug('Event: ', msg)
       },
-      toggle () {
-        this.showRecorder = !this.showRecorder
+      setStatus () {
+        // console.log('success')
+        this.uploadStatus = 'success'
+        setTimeout(e=>{
+          this.uploadStatus = null
+        }, 300);
       }
     }
   }

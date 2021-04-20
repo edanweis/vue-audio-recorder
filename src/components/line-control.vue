@@ -4,8 +4,12 @@
     height: 8px;
     border-radius: 5px;
     background-color: #E6E6E6;
+    width:100%;
+    flex-grow: 10;
 
     &__head {
+    transition: all 300ms linear;
+      // transition: all 100ms ease-in;
       position: absolute;
       height: inherit;
       background-color: #616161;

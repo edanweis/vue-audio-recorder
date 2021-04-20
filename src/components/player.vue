@@ -1,19 +1,22 @@
 <style lang="scss">
   .ar-player {
-    width: 380px;
+    width: auto;
     height: unset;
+    flex-grow: 4;
     border: 0;
     border-radius: 0;
+    opacity: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: stretch;
     background-color: unset;
     font-family: 'Roboto', sans-serif;
+    transition: opacity 140ms ease-out;
 
     & > .ar-player-bar {
-      border: 1px solid #E8E8E8;
-      border-radius: 24px;
+      // border: 1px solid #E8E8E8;
+      // border-radius: 24px;
       margin: 0 0 0 5px;
 
       & > .ar-player__progress {
@@ -27,13 +30,16 @@
       height: 38px;
       padding: 0 12px;
       margin: 0 5px;
+      flex-grow: 8;
+      cursor: pointer;
     }
 
     &-actions {
-      width: 55%;
+      // width: 40px;
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      // justify-content: space-around;
+      flex-grow: 0.4; 
     }
 
     &__progress {
@@ -51,16 +57,28 @@
       width: 45px;
       height: 45px;
       background-color: #FFFFFF;
-      box-shadow: 0 2px 11px 11px rgba(0,0,0,0.07);
+      // box-shadow: 0 2px 11px 11px rgba(0,0,0,0.07);
 
       &--active {
-        fill: white !important;
-        background-color: #05CBCD !important;
+        // fill: white !important;
+        // background-color: #05CBCD !important;
 
         &:hover {
           fill: #505050 !important;
         }
       }
+    }
+  }
+
+  div.disabled {
+    color: grey;
+    border-color: white;
+    // pointer-events: none;
+    opacity: .6;
+    cursor: not-allowed !important;
+    user-select: none;
+    &:hover {
+      cursor: not-allowed !important;
     }
   }
 
@@ -74,7 +92,7 @@
         id="play"
         class="ar-icon ar-icon__lg ar-player__play"
         :name="playBtnIcon"
-        :class="{'ar-player__play--active': isPlaying}"
+        :class="{'ar-player__play--active': isPlaying, 'disabled': disablePlayButton}"
         @click.native="playback"/>
     </div>
 
@@ -86,7 +104,7 @@
         :percentage="progress"
         @change-linehead="_onUpdateProgress"/>
       <div class="ar-player__time">{{duration}}</div>
-      <volume-control @change-volume="_onChangeVolume"/>
+      <volume-control v-if="volume" @change-volume="_onChangeVolume" :class="{'disabled': disablePlayButton}"/>
     </div>
 
     <audio :id="playerUniqId" :src="audioSource"></audio>
@@ -103,14 +121,16 @@
     props: {
       src      : { type: String },
       record   : { type: Object },
-      filename : { type: String }
+      filename : { type: String },
+      volume   : { type: Boolean }
     },
     data () {
       return {
         isPlaying  : false,
         duration   : convertTimeMMSS(0),
         playedTime : convertTimeMMSS(0),
-        progress   : 0
+        progress   : 0,
+        disablePlayButton : true
       }
     },
     components: {
@@ -140,8 +160,10 @@
       audioSource () {
         const url = this.src || this.record.url
         if (url) {
+           this.disablePlayButton = false
           return url
         } else {
+           this.disablePlayButton = true
           this._resetProgress()
         }
       },
