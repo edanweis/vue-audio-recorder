@@ -25,8 +25,13 @@
       :failed-upload="callback"
       :bit-rate="192"
       :sample-rate="48000"
-      :uploadStatus="uploadStatus"
-      />
+      :uploadStatus="uploadStatus">
+      <template v-slot:upload>
+          
+      </template>
+        
+      
+    </audio-recorder>
 
     <audio-player :src="mp3" v-if="!showRecorder"/>
   </div>
@@ -50,7 +55,6 @@
         console.debug('Event: ', msg)
       },
       setStatus () {
-        // console.log('success')
         this.uploadStatus = 'success'
         setTimeout(e=>{
           this.uploadStatus = null

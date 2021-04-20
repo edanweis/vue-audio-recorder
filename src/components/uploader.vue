@@ -1,9 +1,10 @@
 <style lang="scss">
   @import '../scss/icons';
 </style>
-
-<template>
-  <icon-button name="save" class="ar-icon ar-icon__xs ar-icon--no-border" @click.native="upload"/>
+  <template>
+    <div>
+  <slot name="upload"><div @click="upload" class="ar-upload-text">UPLOAD</div> </slot>
+  </div>
 </template>
 
 <script>

@@ -13,6 +13,24 @@
     flex-wrap: wrap;
     justify-content: space-between;
 
+    &-upload-text{
+      pointer-events: all !important;
+      cursor: pointer;
+      color: black;
+      border-radius: 4px;
+      border: 1px solid grey;
+      font-weight: 500;
+      padding: 0px 8px;
+      margin: 0px 4px;
+      background-color: rgba(245,245,245,0.2);
+
+      &:hover {
+        background-color: rgba(245,245,245,0.2);        
+      }
+    }
+
+
+
     &-content {
       width: 100%;
       padding: 16px;
@@ -34,12 +52,13 @@
       &__record {
         // width: 320px;
         height: 45px;
-        padding: 10px 10px;
+        padding: 10px 20px;
         margin: 10px auto;
         line-height: 45px;
         display: flex;
         justify-content: space-between;
-        border-bottom: 1px solid #E8E8E8;
+        // border-bottom: 1px solid #E8E8E8;
+        border-radius: 7px;
         position: relative;
         cursor: pointer;
         align-items: center;
@@ -70,6 +89,7 @@
       flex-wrap: no-wrap;
 
       &__duration {
+        transition: opacity 120ms ease-out;
         color: #AEAEAE;
         font-size: 32px;
         font-weight: 500;
@@ -77,6 +97,12 @@
         margin-bottom: 16px;
         margin-left: 20px;
         margin-right: 20px;
+        opacity: 1;
+
+        &--hidden{
+          opacity: 0;
+        }
+
       }
 
       &__stop {
@@ -142,6 +168,7 @@
       }
     }
 
+
     &__text {
       color: rgba(84,84,84,0.5);
       font-size: 16px;
@@ -149,11 +176,13 @@
 
     }
 
+
+
     &__clip {
       border-radius: 50%;
       background: rgba(0,0,0,0.66);
-      width: 20px;
-      height: 20px;
+      width: 30px;
+      height: 30px;
       color: white;
       font-weight: 600;
       font-size: 13px;
@@ -209,20 +238,13 @@
     }
 
     &__downloader,
-    &__uploader {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      margin: 20px 12px 0 20px;
-    }
+    
 
     &__downloader {
       right: 115px;
     }
 
-    &__uploader {
-      right: 85px;
-    }
+    
   }
 
   @import '../scss/icons';
@@ -253,7 +275,7 @@
           :class="['ar-icon ar-icon__sm ar-recorder__stop', {'ar-recorder__stop--hidden':!isRecording || isPaused}]"
           name="stop"
           @click.native="stopRecorder"/>
-      <div class="ar-recorder__duration">{{recordedTime}}</div>
+      <div :class="['ar-recorder__duration', {'ar-recorder__duration--hidden': !isRecording} ]">{{recordedTime}}</div>
       </div>
 
 
@@ -273,8 +295,8 @@
         v-for="(record, idx) in recordList"
         @click="choiceRecord(record)">
           <div class="ar__clip">{{idx + 1}}</div>
-          <audio-player style="zoom: 0.7; margin: 0 80px 0 30px;" :record="selected"/>
-          <div class="ar__text">{{record.duration}}</div>
+          <audio-player style="zoom: 0.7; margin: 0 30px 0 30px;" :record="selected"/>
+          <div class="ar__text" v-if="record.id !== selected.id">{{record.duration}}</div>
           <div
             class="ar__rm"
             v-if="record.id === selected.id"
@@ -288,11 +310,15 @@
 
           <uploader
             v-if="record.id === selected.id && showUploadButton"
-            class="ar__uploader"
+            class=""
             :record="record"
             :filename="filename"
             :headers="headers"
-            :upload-url="uploadUrl"/>
+            :upload-url="uploadUrl">
+              <template v-slot:upload>
+                <slot name="upload"></slot>
+              </template>
+            </uploader>
       </div>
     </div>
 

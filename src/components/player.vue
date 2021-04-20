@@ -57,6 +57,7 @@
       width: 45px;
       height: 45px;
       background-color: #FFFFFF;
+      padding: 3px;
       // box-shadow: 0 2px 11px 11px rgba(0,0,0,0.07);
 
       &--active {
