@@ -58,6 +58,7 @@
         display: flex;
         justify-content: space-between;
         // border-bottom: 1px solid #E8E8E8;
+        background-color: #FFFFFF;
         border-radius: 7px;
         position: relative;
         cursor: pointer;
@@ -299,7 +300,7 @@
           <div class="ar__text" v-if="record.id !== selected.id">{{record.duration}}</div>
           <div
             class="ar__rm"
-            v-if="record.id === selected.id"
+            v-if="(record.id === selected.id) && !isUploading"
             @click="removeRecord(idx)">&times;</div>
 
           <downloader
@@ -427,6 +428,11 @@
 
         this.recorder.stop()
         this.recordList = this.recorder.recordList()
+        if(this.recordList.length==1){
+            this.selected = this.recorder.recordList()[0]
+        } else if(this.recordList.length>1) {
+          this.selected = this.recorder.recordList()[this.recordList.length-1]
+        }
       },
       removeRecord (idx) {
         this.recordList.splice(idx, 1)

@@ -27,7 +27,7 @@
       :sample-rate="48000"
       :uploadStatus="uploadStatus">
       <template v-slot:upload>
-          <btn>test this</btn>
+          
       </template>
         
       
