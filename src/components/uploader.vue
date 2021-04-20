@@ -25,7 +25,7 @@
           return
         }
 
-        this.$eventBus.$emit('start-upload')
+        this.$eventBus.$emit('start-upload', this.record.id)
 
         const data = new FormData()
         data.append('audio', this.record.blob, `${this.filename}.mp3`)

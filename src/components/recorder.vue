@@ -34,7 +34,7 @@
       &__record {
         // width: 320px;
         height: 45px;
-        padding: 0 10px;
+        padding: 10px 10px;
         margin: 10px auto;
         line-height: 45px;
         display: flex;
@@ -42,6 +42,7 @@
         border-bottom: 1px solid #E8E8E8;
         position: relative;
         cursor: pointer;
+        align-items: center;
 
         &--selected {
           // border: 1px solid #E8E8E8;
@@ -148,6 +149,21 @@
 
     }
 
+    &__clip {
+      border-radius: 50%;
+      background: rgba(0,0,0,0.66);
+      width: 20px;
+      height: 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pading: 5px;
+    }
+
     &__blur {
       filter: blur(2px);
       opacity: 0.7;
@@ -182,12 +198,13 @@
       position: absolute;
       width: 6px;
       height: 6px;
-      padding: 6px;
+      padding: 0 10px;
       line-height: 6px;
-      margin: auto;
+      margin: auto 0px auto 0px;
       right: 10px;
       bottom: 0;
       top: 0;
+      font-size: 30px !important;
       color: rgb(244, 120, 90);
     }
 
@@ -196,7 +213,7 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      margin: 10px 10px 0 20px;
+      margin: 20px 12px 0 20px;
     }
 
     &__downloader {
@@ -255,7 +272,7 @@
         :key="record.id"
         v-for="(record, idx) in recordList"
         @click="choiceRecord(record)">
-          <div class="ar__text">Clip {{idx + 1}}</div>
+          <div class="ar__clip">{{idx + 1}}</div>
           <audio-player style="zoom: 0.7; margin: 0 80px 0 30px;" :record="selected"/>
           <div class="ar__text">{{record.duration}}</div>
           <div
@@ -332,9 +349,9 @@
       Uploader
     },
     mounted () {
-      this.$eventBus.$on('start-upload', () => {
+      this.$eventBus.$on('start-upload', (id) => {
         this.isUploading = true
-        this.beforeUpload && this.beforeUpload('before upload')
+        this.beforeUpload && this.beforeUpload('before upload', id)
       })
 
       this.$eventBus.$on('end-upload', (msg) => {
@@ -343,6 +360,7 @@
 
         if (msg.status === 'success') {
           this.successfulUpload && this.successfulUpload(msg.response)
+          this.removeRecord(this.recordList.findIndex(e=>e.index==msg.id))
         } else {
           this.failedUpload && this.failedUpload(msg.response)
         }
@@ -354,10 +372,10 @@
     watch: {
       uploadStatus(val){
         console.log('you externally stopped')
-        if(val=='success'){
-          this.$eventBus.$emit('end-upload', { status: 'success', response: 'success' })
+        if(val.status=='success'){
+          this.$eventBus.$emit('end-upload', { status: 'success', response: 'success', id: val.id  })
         }
-        if(val=='fail'){
+        if(val.status=='fail'){
           this.$eventBus.$emit('end-upload', { status: 'fail', response: 'fail' })
         }
       }
