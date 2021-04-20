@@ -399,7 +399,7 @@
     watch: {
 
       selected(val){
-        this.$eventBus.$emit('selected', val)
+        this.$emit('selected', val)
       },
 
       uploadStatus(val){

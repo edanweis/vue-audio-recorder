@@ -8,7 +8,7 @@
 <template>
   <div class="row">
     <div class="toggle" @click="setStatus">status</div>
-
+    {{selected}}
     <audio-recorder v-if="showRecorder"
       upload-url="some url"
       filename="ninja"
@@ -25,7 +25,9 @@
       :failed-upload="callback"
       :bit-rate="192"
       :sample-rate="48000"
-      :uploadStatus="uploadStatus">
+      :uploadStatus="uploadStatus"
+      @selected="selected=$event"
+      >
       <template v-slot:upload>
           
       </template>
@@ -42,6 +44,7 @@
     name: 'app',
     data () {
       return {
+        selected:null,
         uploadStatus: null,
         mp3: '/demo/example.mp3',
         showRecorder: true,
