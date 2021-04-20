@@ -359,7 +359,7 @@
       successfulUpload : { type: Function },
       selectRecord     : { type: Function },
 
-      uploadStatus        : { type: String}
+      uploadStatus        : { type: Object}
     },
     data () {
       return {
