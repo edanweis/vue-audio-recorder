@@ -50,7 +50,7 @@
       justify-content: end;
 
       &__record {
-        // width: 320px;
+        // width: 320px ;
         height: 45px;
         padding: 10px 20px;
         margin: 10px auto;
@@ -194,8 +194,8 @@
     }
 
     &__blur {
-      filter: blur(2px);
-      opacity: 0.7;
+      // filter: blur(2px);
+      // opacity: 0.7;
     }
 
     &__overlay {
@@ -272,7 +272,7 @@
           }"
           @click.native="toggleRecorder"/>
         <icon-button
-          :class="['ar-icon ar-icon__sm ar-recorder__stop', {'ar-recorder__stop--hidden':!isRecording || isPaused}]"
+          :class="['ar-icon ar-icon__sm ar-recorder__stop', {'ar-recorder__stop--hidden':!isRecording}]"
           name="stop"
           @click.native="stopRecorder"/>
       <div :class="['ar-recorder__duration', {'ar-recorder__duration--hidden': !isRecording} ]">{{recordedTime}}</div>
@@ -398,10 +398,12 @@
     watch: {
       uploadStatus(val){
         console.log('you externally stopped')
-        if(val.status=='success'){
+        if(val && val.status=='success'){
           this.$eventBus.$emit('end-upload', { status: 'success', response: 'success', id: val.id  })
         }
-        if(val.status=='fail'){
+        if(val && val.status=='fail'){
+          this.$eventBus.$emit('end-upload', { status: 'fail', response: 'fail' })
+        } else{
           this.$eventBus.$emit('end-upload', { status: 'fail', response: 'fail' })
         }
       }

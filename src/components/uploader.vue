@@ -2,8 +2,8 @@
   @import '../scss/icons';
 </style>
   <template>
-    <div>
-  <slot name="upload"><div @click="upload" class="ar-upload-text">UPLOAD</div> </slot>
+    <div @click="upload">
+  <slot name="upload"><div class="ar-upload-text">UPLOAD</div> </slot>
   </div>
 </template>
 
